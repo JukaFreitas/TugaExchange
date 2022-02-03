@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System; 
 using System.Collections.Generic;
 
 namespace TugaExchange
@@ -31,25 +31,17 @@ namespace TugaExchange
                 "Sair"
             };
 
-            for (int i = 0; i < menuPrincipal.Count; i++)
-            {
-                Console.WriteLine(menuPrincipal[i]);
-            }
+            Stats.Print(menuPrincipal);
+            
+            var opcao = Stats.ReadString("Insira a opção pretendida:");
 
-            Console.WriteLine("Insira a opção:");
-            var opcao = Console.ReadLine();
-
-            Console.Clear();
+            Console.Clear(); 
 
             if (opcao == "1")
             {
-                for (int i = 0; i < menuInvestidor.Count; i++)
-                {
-                    Console.WriteLine(menuInvestidor[i]);
-                }
+                Stats.Print(menuInvestidor);
 
-                Console.WriteLine("Insira a operação:");
-                var opcaoInvestidor = Console.ReadLine();
+                var opcaoInvestidor = Stats.ReadString("Insira a opção pretendida:");
 
                 switch (opcaoInvestidor)
                 {
@@ -69,17 +61,14 @@ namespace TugaExchange
             }
             else
             {
-                for (int i = 0; i < menuAdministrador.Count; i++)
-                {
-                    Console.WriteLine(menuAdministrador[i]);
-                }
+                Stats.Print(menuAdministrador);
 
-                Console.WriteLine("Insira a operação:");
-                var opcaoAdministrador = Console.ReadLine();
+                var opcaoAdministrador = Stats.ReadString("Insira a opção pretendida:");
 
                 switch (opcaoAdministrador)
                 {
                     case "1": // Adicionar moeda 
+                        CryptoQuoteAPI.AddCoin(); 
                         break;
                     case "2": // Remover moeda 
                         break;
@@ -88,5 +77,6 @@ namespace TugaExchange
                 }
             }
         }
+
     }
 }

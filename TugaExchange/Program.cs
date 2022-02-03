@@ -7,7 +7,9 @@ namespace TugaExchange
     {
         static void Main(string[] args)
         {
-            Menu.Initialize(); 
+            //Menu.Initialize();
+            CryptoQuoteAPI.AddCoin(); 
+
         }
     }
 }
