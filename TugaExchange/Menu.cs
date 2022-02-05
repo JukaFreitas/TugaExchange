@@ -32,10 +32,10 @@ namespace TugaExchange
             };
 
             Stats.Print(menuPrincipal);
-            
+
             var opcao = Stats.ReadString("Insira a opção pretendida:");
 
-            Console.Clear(); 
+            Console.Clear();
 
             if (opcao == "1")
             {
@@ -68,7 +68,7 @@ namespace TugaExchange
                 switch (opcaoAdministrador)
                 {
                     case "1": // Adicionar moeda 
-                        CryptoQuoteAPI.AddCoin(); 
+                        CryptoQuoteAPI.AddCoin();
                         break;
                     case "2": // Remover moeda 
                         break;
