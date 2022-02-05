@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {}
+    "net5.0": {
+      "CryptoQuoteAPI/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/CryptoQuoteAPI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CryptoQuoteAPI.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "CryptoQuoteAPI/1.0.0": {
+      "type": "project",
+      "path": "../CryptoQuoteAPI/CryptoQuoteAPI.csproj",
+      "msbuildProject": "../CryptoQuoteAPI/CryptoQuoteAPI.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net5.0": []
+    "net5.0": [
+      "CryptoQuoteAPI >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Utilizador\\.nuget\\packages\\": {},
@@ -38,7 +57,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\CryptoQuoteAPI\\CryptoQuoteAPI.csproj": {
+              "projectPath": "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\CryptoQuoteAPI\\CryptoQuoteAPI.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

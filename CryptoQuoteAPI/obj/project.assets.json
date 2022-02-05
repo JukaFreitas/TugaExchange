@@ -1,30 +1,11 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {
-      "TugaExchange/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v5.0",
-        "compile": {
-          "bin/placeholder/TugaExchange.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TugaExchange.dll": {}
-        }
-      }
-    }
+    "net5.0": {}
   },
-  "libraries": {
-    "TugaExchange/1.0.0": {
-      "type": "project",
-      "path": "../TugaExchange/TugaExchange.csproj",
-      "msbuildProject": "../TugaExchange/TugaExchange.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    "net5.0": [
-      "TugaExchange >= 1.0.0"
-    ]
+    "net5.0": []
   },
   "packageFolders": {
     "C:\\Users\\Utilizador\\.nuget\\packages\\": {},
@@ -57,11 +38,7 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {
-            "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\TugaExchange\\TugaExchange.csproj": {
-              "projectPath": "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\TugaExchange\\TugaExchange.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
