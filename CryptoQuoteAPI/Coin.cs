@@ -2,7 +2,7 @@
 
 namespace CryptoQuoteAPI
 {
-    internal class Coin
+    public class Coin
     {
         // A classe tem de ser inicializada 
         private string _name;
@@ -69,15 +69,13 @@ namespace CryptoQuoteAPI
         public void UpdateExchangeRate(int priceUpdateInSeconds)
         { //time span que representa o intervalo de tempo que passou, desde a última exchangeData -> data de cambio. 
 
-            Random rnd = new Random();
-
             var time = DateTime.Now - _lastExchangeDate;
             var iterationsCount = Convert.ToInt32(time.TotalSeconds) / priceUpdateInSeconds;
 
             for (int i = 0; i < iterationsCount; i++)
             {
                 _exchangeRateInEur += _exchangeRateInEur * Utils.GetRandomDecimal(-0.005m,0.005m);
-                _lastExchangeDate.AddSeconds(priceUpdateInSeconds); 
+                _lastExchangeDate = _lastExchangeDate.AddSeconds(priceUpdateInSeconds); 
             }
         }
     }

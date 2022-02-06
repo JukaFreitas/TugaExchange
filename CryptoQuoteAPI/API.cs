@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CryptoQuoteAPI
 {
-    internal class API
+    public class API
     {
         // Para utilizar a lista das moedas já pre-definidas, defini na class currencies. 
         // Lista sobre o qual vou fazer operações
-        private int _priceUpdateInSeconds; 
-        private List<Coin> _coins = new List<Coin>();
+        private int _priceUpdateInSeconds;
+        private List<Coin> _coins;
 
         //Rever se é preciso isto, porque o GetPriceUpdateInSeconds permite obter os preços de cotações -> get return_PriceUpdateInSeconds
         // DefinePrriceUpdateInSeconds permite difinir o valor de tempo -> _priceUpdateInSeconds = value; 
+
+        // Declarei em cima a Lista de coins, mas só quero que inicializá-la aquando iniciar a API; 
+        // Defino o valor de tempo, por omissão. 
+        public API()
+        {
+            _coins = new List<Coin>();
+            _priceUpdateInSeconds = 60; 
+        }
+
         public int PriceUpdateInSeconds
         {
             get
@@ -83,9 +91,19 @@ namespace CryptoQuoteAPI
             return _priceUpdateInSeconds; 
         }
 
-        public List<Coin> GetPrices(out List<decimal> prices, out List<string> coins)
+        public void GetPrices(out List<decimal> prices, out List<string> coins)
         {
+            prices = new List<decimal>();
+            coins = new List<string>(); 
 
+            foreach (var coin in _coins)
+            {
+                // Tenho que devolver a lista dos preços atualizados, por isso tenho utilizar o UpdateExhangeRate para ter a lista atualizada de preços,
+                // para conseguir adicionar os preços e os nomes das coins às listas criadas.
+                coin.UpdateExchangeRate(_priceUpdateInSeconds);
+                prices.Add(coin.ExchangeRateInEur);
+                coins.Add(coin.Name); 
+            }
         }
 
 

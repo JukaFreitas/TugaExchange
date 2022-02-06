@@ -6,14 +6,6 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "TugaExchange/1.0.0": {
-        "dependencies": {
-          "CryptoQuoteAPI": "1.0.0"
-        },
-        "runtime": {
-          "TugaExchange.dll": {}
-        }
-      },
       "CryptoQuoteAPI/1.0.0": {
         "runtime": {
           "CryptoQuoteAPI.dll": {}
@@ -22,11 +14,6 @@
     }
   },
   "libraries": {
-    "TugaExchange/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CryptoQuoteAPI/1.0.0": {
       "type": "project",
       "serviceable": false,
