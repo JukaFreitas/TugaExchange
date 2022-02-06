@@ -48,9 +48,10 @@ namespace TugaExchange
         {
             List<string> menuAdministrador = new List<string>()
             {
-                "Adicionar Moeda",
-                "Remover Moeda",
-                "Sair"
+                "1) Adicionar Moeda",
+                "2) Remover Moeda",
+                "3) Ver relatório das comissões",
+                "4) Sair"
             };
 
             Stats.Print(menuAdministrador);
@@ -59,17 +60,35 @@ namespace TugaExchange
             
             switch (opcaoAdministrador)
             {
-                case "1": // Adicionar moeda 
-                    Console.WriteLine("Insira o nome da moeda:");
-                    var name = Console.ReadLine();
-                    _api.AddCoin(name);
+                case "1": // Adicionar moeda
+                    try
+                    {
+                        Console.WriteLine("Insira o nome da moeda:");
+                        var name = Console.ReadLine();
+                        _api.AddCoin(name);
+                    }
+                    catch (Exception baseDados)
+                    {
+                        Console.WriteLine(baseDados);
+                    }
+                    Thread.Sleep(5000); 
                     break;
 
                 case "2": // Remover moeda 
-                    Console.WriteLine("Insira o nome da moeda a remover:");
-                    var nameToRemove = Console.ReadLine();
-                    _api.RemoveCoin(nameToRemove);
+                    try
+                    {
+                        Console.WriteLine("Insira o nome da moeda a remover:");
+                        var nameToRemove = Console.ReadLine();
+                        _api.RemoveCoin(nameToRemove);
+                    }
+                    catch (Exception baseDados)
+                    {
+
+                        Console.WriteLine(baseDados);
+                    }
+                    Thread.Sleep(5000); 
                     break;
+
 
                 default: // sair 
                     break;
@@ -80,12 +99,12 @@ namespace TugaExchange
         {
             List<string> menuInvestidor = new List<string>()
             {
-                "Depositar",
-                "Comprar Moeda",
-                "Vender Moeda",
-                "Mostrar Portfólio",
-                "Mostrar Câmbio",
-                "Sair"
+                "1) Depositar",
+                "2) Comprar Moeda",
+                "3) Vender Moeda",
+                "4) Mostrar Portfólio",
+                "5) Mostrar Câmbio",
+                "6) Sair"
             };
 
             Stats.Print(menuInvestidor);
@@ -104,8 +123,11 @@ namespace TugaExchange
                     break;
                 case "5":
                     _api.GetPrices(out List<decimal> prices, out List<string> coins);
-                    Console.WriteLine(prices);
-                    Console.WriteLine(coins);
+
+                    for (int i = 0; i < coins.Count; i++)
+                    {
+                        Console.WriteLine(coins[i] + "|" + Math.Round(prices[i],2));
+                    }
                     Thread.Sleep(5000);
                     break;
                 default: // sair 

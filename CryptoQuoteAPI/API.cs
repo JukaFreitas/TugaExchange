@@ -18,7 +18,7 @@ namespace CryptoQuoteAPI
         public API()
         {
             _coins = new List<Coin>();
-            _priceUpdateInSeconds = 60; 
+            _priceUpdateInSeconds = 15; 
         }
 
         public int PriceUpdateInSeconds
@@ -48,9 +48,16 @@ namespace CryptoQuoteAPI
         public void AddCoin(string coinName)
         {
             //Validar primeiro se ha uma moeda igual. 
-            var coin = new Coin(coinName, 1, DateTime.Now);
-            _coins.Add(coin); 
-
+            foreach (var coin in _coins)
+            {
+                if (coin.Name.Equals(coinName))
+                {
+                    throw new Exception("A moeda já consta na base de dados.\n Tente novamente:"); 
+                }
+            }
+           // Criação de nava moeda, pois não é necessário antes da verificação se há uma igual.
+           var coinToAdd = new Coin(coinName, 1.00m , DateTime.Now);
+            _coins.Add(coinToAdd); 
         }
 
         public List<Coin> GetCoins()
@@ -60,25 +67,34 @@ namespace CryptoQuoteAPI
 
         public void RemoveCoin(string coinName)
         {
-            bool hasCoin = false; 
-            foreach (var coin in _coins)
-            { 
-                // para aceder à propriedade Name da coin, temos de colocar coin.Name, porque coin(string name, decimal value) é um objeto da Class Coin 
-                if (coinName == coin.Name)
-                {
-                    _coins.Remove(coin);
-                    hasCoin = true; 
-                }
-            }
-            // isto para validar se tem Coin ou não que queremos remover da lista. Primeiro, entra no if, se encontra termina com o hasCoin = true; 
-            // Caso não aconteca, quer dizer que não há moeda e por isso a criação da excepção. 
-            if (!hasCoin)
-            {
-                throw new Exception("A moeda não consta na base de dados"); 
-            }
+            /* bool hasCoin = false; 
+             foreach (var coin in _coins)
+             { 
+                 // para aceder à propriedade Name da coin, temos de colocar coin.Name, porque coin(string name, decimal value) é um objeto da Class Coin 
+                 if (coin.Name.Equals(coinName))
+                 {
+                     _coins.Remove(coin);
+                     hasCoin = true; 
+                 }
+             }
+             // isto para validar se tem Coin ou não que queremos remover da lista. Primeiro, entra no if, se encontra termina com o hasCoin = true; 
+             // Caso não aconteca, quer dizer que não há moeda e por isso a criação da excepção. 
+             if (!hasCoin)
+             {
+                 throw new Exception("A moeda não consta na base de dados"); 
+             }*/
             //quero mostrar a lista de todas as coins
             //tenho de validar se tenho alguma moeda com aquele nome. 
-            
+            // O codigo de cima não funciona, porque estou a iterar e a remover. Solução: criação de lista fantasma. ToList(), por exemplo. 
+
+
+            //Retorna a quantidade de elementos removidos da lista, segundo a condição. 
+
+            var removedQuantity = _coins.RemoveAll(coin => coin.Name.Equals(coinName));
+            if (removedQuantity == 0)
+            {
+                throw new Exception("A moeda não consta na base de dados");
+            }
         }
 
         public void DefinePriceUpdateInSeconds(int seconds)
@@ -105,8 +121,6 @@ namespace CryptoQuoteAPI
                 coins.Add(coin.Name); 
             }
         }
-
-
 
      /*   public API(string name, decimal value)
         {
