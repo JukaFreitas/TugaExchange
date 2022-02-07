@@ -6,12 +6,14 @@ using CryptoQuoteAPI;
 namespace TugaExchange
 {
     internal class Menu
-    {
-        private API _api; 
+    {//tenho de declarar os objetos e depois inicializá-los
+        private API _api;
+        private Investor _investor;
 
         public void Initialize()
         {
-            _api = new API(); 
+            _api = new API();
+            _investor = new Investor();
 
             List<string> menuPrincipal = new List<string>()
             {
@@ -81,14 +83,13 @@ namespace TugaExchange
                         var nameToRemove = Console.ReadLine();
                         _api.RemoveCoin(nameToRemove);
                     }
-                    catch (Exception baseDados)
+                    catch (Exception ex)
                     {
 
-                        Console.WriteLine(baseDados);
+                        Console.WriteLine(ex);
                     }
                     Thread.Sleep(5000); 
                     break;
-
 
                 default: // sair 
                     break;
@@ -114,8 +115,14 @@ namespace TugaExchange
             switch (opcaoInvestidor)
             {
                 case "1": //Depositar 
+                    Console.WriteLine("Insira o montante:");
+                    var cashInEuros = decimal.Parse(Console.ReadLine());
+                    _investor.Deposit(cashInEuros);
                     break;
                 case "2": // Comprar moeda 
+                    Console.WriteLine("Insira a moeda e a quantidade a comprar\n");
+
+
                     break;
                 case "3": // vender moeda 
                     break;
