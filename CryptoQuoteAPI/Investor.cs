@@ -47,7 +47,7 @@ namespace CryptoQuoteAPI
                 _fundsInEuros = value; 
             }
         }
-        public  Investor()
+        public Investor()
         {
             _coins = new List<Coin>();
             _coinsQuantities = new List<decimal>();
@@ -64,10 +64,10 @@ namespace CryptoQuoteAPI
         {
             //converter a quantitdade que quero comprar, para euros. 
             var coinInEuros = coinToBuy.ExchangeRateInEur * quantity;
+            var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
 
-            if (_fundsInEuros <= coinInEuros)
+            if (_fundsInEuros >= coinInEuros)
             {
-                var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
                 // se é dif de -1, é porque encontrou há um index. 0 == lista vazia. 
                 if (index != -1)
                 {
@@ -79,6 +79,10 @@ namespace CryptoQuoteAPI
                     _coinsQuantities.Add(quantity);
                 }
                 _fundsInEuros -= coinInEuros; 
+            }
+            else if(index == -1)
+            {
+                throw new Exception("A moeda não existe."); 
             }
             else
             {
@@ -96,7 +100,12 @@ namespace CryptoQuoteAPI
             if (index != -1 && quantity <= _coinsQuantities[index])
             {
                 _coinsQuantities[index] -= quantity;
-                _fundsInEuros += coinInEuros; 
+                _fundsInEuros += coinInEuros;
+            }
+            else if (_coinsQuantities[index] == 0)
+            {
+                _coinsQuantities.RemoveAt(index);
+                _coins.RemoveAt(index); 
             }
             else if (index == -1)
             {
@@ -106,6 +115,8 @@ namespace CryptoQuoteAPI
             {
                 throw new Exception("Só pode vender no limite da quantidade que tem na carteira"); 
             }
+
+
         }
     }
 }

@@ -9,8 +9,7 @@ namespace TugaExchange
         {
             var menu = new Menu();
             menu.Initialize(); 
-            //CryptoQuoteAPI.AddCoin(); 
-            //CryptoQuoteAPI.TentativaPrint();
+            
 
         }
     }

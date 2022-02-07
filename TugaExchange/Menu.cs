@@ -67,11 +67,12 @@ namespace TugaExchange
                     {
                         Console.WriteLine("Insira o nome da moeda:");
                         var name = Console.ReadLine();
+
                         _api.AddCoin(name);
                     }
-                    catch (Exception baseDados)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine(baseDados);
+                        Console.WriteLine(ex);
                     }
                     Thread.Sleep(5000); 
                     break;
@@ -119,16 +120,58 @@ namespace TugaExchange
                     var cashInEuros = decimal.Parse(Console.ReadLine());
                     _investor.Deposit(cashInEuros);
                     break;
+
                 case "2": // Comprar moeda 
-                    Console.WriteLine("Insira a moeda e a quantidade a comprar\n");
-
-
+                    try
+                    {
+                        Console.WriteLine("Insira a moeda e a quantidade a comprar");
+                        Console.WriteLine("Moeda:");
+                        var coinName = Console.ReadLine();
+                        Console.WriteLine("Quantidade:");
+                        var coinQuantity = decimal.Parse(Console.ReadLine());
+                        foreach (var coin in _api.GetCoins())
+                        {
+                            if (coinName == coin.Name)
+                            {
+                                _investor.BuyCoin(coin, coinQuantity);
+                                break;
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                     break;
+
                 case "3": // vender moeda 
+                    try
+                    {
+                        Console.WriteLine("Insira a moeda e a quantidade a vender");
+                        Console.WriteLine("Moeda");
+                        var coinToSell = Console.ReadLine();
+                        Console.WriteLine("Quantidade");
+                        var coinQuant = decimal.Parse(Console.ReadLine());
+                        foreach (var coin in _api.GetCoins())
+                        {
+                            if (coinToSell == coin.Name)
+                            {
+                                _investor.SellCoin(coin, coinQuant);
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Console.WriteLine(ex); ;
+                    }
                     break;
+
                 case "4": // mostrar portfólio 
                     break;
-                case "5":
+
+                case "5": // sera que há execçõeS? 
                     _api.GetPrices(out List<decimal> prices, out List<string> coins);
 
                     for (int i = 0; i < coins.Count; i++)
@@ -137,6 +180,7 @@ namespace TugaExchange
                     }
                     Thread.Sleep(5000);
                     break;
+
                 default: // sair 
                     break;
             }
