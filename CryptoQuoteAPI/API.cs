@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CryptoQuoteAPI
 {
@@ -14,11 +15,11 @@ namespace CryptoQuoteAPI
         // DefinePrriceUpdateInSeconds permite difinir o valor de tempo -> _priceUpdateInSeconds = value; 
 
         // Declarei em cima a Lista de coins, mas só quero que inicializá-la aquando iniciar a API; 
-        // Defino o valor de tempo, por omissão. 
+        // Defino o valor de tempo, por omissão.
         public API()
         {
             _coins = new List<Coin>();
-            _priceUpdateInSeconds = 15; 
+            _priceUpdateInSeconds = 15;
         }
 
         public int PriceUpdateInSeconds
@@ -120,6 +121,28 @@ namespace CryptoQuoteAPI
                 prices.Add(coin.ExchangeRateInEur);
                 coins.Add(coin.Name); 
             }
+        }
+
+        /*public void Save()
+        {
+
+            var fileName = "Correctora.txt";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+            var fileInfo = new FileInfo(filePath);
+            fileInfo.Create();
+
+        }
+
+        public void Read()
+        {
+            //Criação objeto
+            string json = System.Text.Json.JsonSerializer.Serialize(_coins);
+            File.WriteAllText(@"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\Correctora.jason", json);
+
+            var jason = File.ReadAllText(@"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\Correctora.jason");
+            var coin = System.Text.Json.JsonSerializer.Deserialize<Coin>(json);
+
         }
 
      /*   public API(string name, decimal value)

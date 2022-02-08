@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryptoQuoteAPI
 {
@@ -47,6 +44,7 @@ namespace CryptoQuoteAPI
                 _fundsInEuros = value; 
             }
         }
+
         public Investor()
         {
             _coins = new List<Coin>();
@@ -62,32 +60,32 @@ namespace CryptoQuoteAPI
         // TODO: Fazer as validações-> se a moeda existe
         public void BuyCoin(Coin coinToBuy, decimal quantity)
         {
-            //converter a quantitdade que quero comprar, para euros. 
+            //converter a quantidade que quero comprar, para euros. 
             var coinInEuros = coinToBuy.ExchangeRateInEur * quantity;
             var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
-
-            if (_fundsInEuros >= coinInEuros)
-            {
-                // se é dif de -1, é porque encontrou há um index. 0 == lista vazia. 
-                if (index != -1)
+          
+                if (_fundsInEuros >= coinInEuros)
                 {
-                    _coinsQuantities[index] += quantity;
+                // se é dif de -1, é porque encontrou há um index. 0 == lista vazia. 
+                    if (index != -1)
+                    {
+                        _coinsQuantities[index] += quantity;
+                    }
+                    else
+                    {
+                        _coins.Add(coinToBuy);
+                        _coinsQuantities.Add(quantity);
+                    }
+                    _fundsInEuros -= coinInEuros; 
+                }
+                else if(index == -1)
+                {
+                    throw new Exception("A moeda não existe."); 
                 }
                 else
                 {
-                    _coins.Add(coinToBuy);
-                    _coinsQuantities.Add(quantity);
+                    throw new Exception("Não tem fundo suficiente para fazer a compra."); 
                 }
-                _fundsInEuros -= coinInEuros; 
-            }
-            else if(index == -1)
-            {
-                throw new Exception("A moeda não existe."); 
-            }
-            else
-            {
-                throw new Exception("Não tem fundo suficiente para fazer a compra."); 
-            }
         }
 
         public void SellCoin(Coin coinToSell, decimal quantity)
@@ -115,8 +113,6 @@ namespace CryptoQuoteAPI
             {
                 throw new Exception("Só pode vender no limite da quantidade que tem na carteira"); 
             }
-
-
         }
     }
 }
