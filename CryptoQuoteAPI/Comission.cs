@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryptoQuoteAPI
 {
@@ -11,16 +7,29 @@ namespace CryptoQuoteAPI
         private string _coinName;
         private DateTime _date;
         private decimal _comissionValue;
+        private string _type; 
+
+        public bool IsBuy
+        {
+            get 
+            {
+                return _isBuy;
+            }
+            set
+            {
+                _isBuy = value;
+            }
+        }
 
         public string CoinName
         {
             get
             {
-                return _coinName; 
+                return _coinName;
             }
             set
             {
-                _coinName = value; 
+                _coinName = value;
             }
         }
 
@@ -28,13 +37,12 @@ namespace CryptoQuoteAPI
         {
             get
             {
-                return _date; 
+                return _date;
             }
             set
             {
-                _date = value; 
+                _date = value;
             }
-
         }
 
         public decimal ComissionValue
@@ -45,16 +53,17 @@ namespace CryptoQuoteAPI
             }
             set
             {
-                _comissionValue = value; 
+                _comissionValue = value;
             }
         }
 
-
-        public Comission(string name, DateTime dateNow, decimal comissionValue )
+        public Comission(string name, DateTime dateNow, decimal comissionValue, bool isBuy)
         {
-            _coinName = name;  
+            _coinName = name;
             _date = dateNow;
-            _comissionValue = comissionValue; 
+            _comissionValue = comissionValue;
+            _isBuy = ; 
+            
         }
     }
 }

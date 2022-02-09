@@ -6,7 +6,7 @@ namespace CryptoQuoteAPI
     public class Investor
     {
         private List<Coin> _coins;
-        private List<decimal> _coinsQuantities; 
+        private List<decimal> _coinsQuantities;
         private decimal _fundsInEuros;
 
         public List<Coin> Coins
@@ -23,25 +23,25 @@ namespace CryptoQuoteAPI
 
         public List<decimal> CoinsQuantities
         {
-            get 
+            get
             {
-                return _coinsQuantities; 
+                return _coinsQuantities;
             }
-            set 
+            set
             {
-                _coinsQuantities = value; 
+                _coinsQuantities = value;
             }
         }
 
         public decimal FundsInEuros
         {
-            get 
+            get
             {
                 return _fundsInEuros;
             }
-            set 
+            set
             {
-                _fundsInEuros = value; 
+                _fundsInEuros = value;
             }
         }
 
@@ -51,47 +51,41 @@ namespace CryptoQuoteAPI
             _coinsQuantities = new List<decimal>();
             _fundsInEuros = 0;
         }
-          
+
         public void Deposit(decimal cashInEuros)
         {
-            _fundsInEuros += cashInEuros; 
+            _fundsInEuros += cashInEuros;
         }
 
-        // TODO: Fazer as validações-> se a moeda existe
-        public void BuyCoin(Coin coinToBuy, decimal quantity)
+        public decimal BuyCoin(Coin coinToBuy, decimal quantity)
         {
-            //converter a quantidade que quero comprar, para euros. 
+            //converter a quantidade que quero comprar, para euros.
             var coinInEuros = coinToBuy.ExchangeRateInEur * quantity;
-            var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
-          
-                if (_fundsInEuros >= coinInEuros)
+
+            if (_fundsInEuros >= coinInEuros)
+            {
+                var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
+                // se é -1 indica que o elemento não está na lista. 
+                if (index != -1)
                 {
-                // se é dif de -1, é porque encontrou há um index. 0 == lista vazia. 
-                    if (index != -1)
-                    {
-                        _coinsQuantities[index] += quantity;
-                    }
-                    else
-                    {
-                        _coins.Add(coinToBuy);
-                        _coinsQuantities.Add(quantity);
-                    }
-                    _fundsInEuros -= coinInEuros; 
-                }
-                else if(index == -1)
-                {
-                    throw new Exception("A moeda não existe."); 
+                    _coinsQuantities[index] += quantity;
                 }
                 else
                 {
-                    throw new Exception("Não tem fundo suficiente para fazer a compra."); 
+                    _coins.Add(coinToBuy);
+                    _coinsQuantities.Add(quantity);
                 }
+                _fundsInEuros -= coinInEuros;
+                return coinInEuros;
+            }
+            else
+            {
+                throw new Exception("Não tem fundo suficiente para fazer a compra.");
+            }
         }
 
-        public void SellCoin(Coin coinToSell, decimal quantity)
+        public decimal SellCoin(Coin coinToSell, decimal quantity)
         {
-
-            //TODO: remover a lista 
             var index = _coins.FindIndex(coin => coin.Name.Equals(coinToSell.Name));
             var coinInEuros = coinToSell.ExchangeRateInEur * quantity;
 
@@ -99,11 +93,13 @@ namespace CryptoQuoteAPI
             {
                 _coinsQuantities[index] -= quantity;
                 _fundsInEuros += coinInEuros;
-            }
-            else if (_coinsQuantities[index] == 0)
-            {
-                _coinsQuantities.RemoveAt(index);
-                _coins.RemoveAt(index); 
+
+                if (_coinsQuantities[index] == 0)
+                {
+                    _coinsQuantities.RemoveAt(index);
+                    _coins.RemoveAt(index);
+                }
+                return coinInEuros;
             }
             else if (index == -1)
             {
@@ -111,7 +107,7 @@ namespace CryptoQuoteAPI
             }
             else
             {
-                throw new Exception("Só pode vender no limite da quantidade que tem na carteira"); 
+                throw new Exception("Só pode vender no limite da quantidade que tem na carteira");
             }
         }
     }

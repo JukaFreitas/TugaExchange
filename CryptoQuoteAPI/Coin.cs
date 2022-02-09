@@ -56,6 +56,11 @@ namespace CryptoQuoteAPI
             _exchangeRateInEur = exchangeRateInEur;
             _lastExchangeDate = lastExchangeDate; 
         }
+
+        public Coin()
+        {
+        }
+
         public override string ToString()
         {
             return _name + " " + _exchangeRateInEur + " " + _lastExchangeDate ; 

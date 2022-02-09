@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace CryptoQuoteAPI
 {
-    class Administrator
+    public class Administrator
     {
         private List<Comission> _comissions;
-        private decimal _comissionRate; 
+        private decimal _comissionRate;
 
         public List<Comission> Comissions
         {
             get
             {
-                return _comissions; 
+                return _comissions;
             }
-            set 
+            set
             {
-                _comissions = value; 
+                _comissions = value;
             }
         }
 
@@ -27,25 +25,51 @@ namespace CryptoQuoteAPI
         {
             get
             {
-                return _comissionRate; 
+                return _comissionRate;
             }
             set
             {
-                _comissionRate = value; 
+                _comissionRate = value;
             }
         }
 
         public Administrator()
         {
             _comissions = new List<Comission>();
-            _comissionRate = 0.01m; 
+            _comissionRate = 0.01m;
         }
 
-        public void AddComission(string name, decimal comissionTotal)
+        public void AddComission(Comission newcomission)
         {
-            var comissionToAdd = new Comission(name, DateTime.Now, comissionTotal);
-            _comissions.Add(comissionToAdd); 
+            _comissions.Add(newcomission);
+            Save(); 
+
         }
 
+        public void Save()
+        {
+            var fileName = "Comissions.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            //Criação json a partir da Lista de Coins
+            string json = System.Text.Json.JsonSerializer.Serialize(_comissions);
+            File.WriteAllText(filePath, json);
+        }
+
+        public void Read()
+        {
+            var fileName = "Comissions.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            var fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists)
+            {
+                var jason = File.ReadAllText(filePath);
+                _comissions = System.Text.Json.JsonSerializer.Deserialize<List<Comission>>(jason);
+            }
+
+        }
     }
 }
