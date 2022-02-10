@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace CryptoQuoteAPI
 {
@@ -20,7 +21,7 @@ namespace CryptoQuoteAPI
         public API()
         {
             _coins = new List<Coin>();
-            _priceUpdateInSeconds = 15;
+            _priceUpdateInSeconds = 60;
         }
 
         public int PriceUpdateInSeconds
@@ -63,10 +64,7 @@ namespace CryptoQuoteAPI
             Save();
         }
 
-        public List<Coin> GetCoins()
-        {
-            return _coins;
-        }
+        // eliminei o getcoins porque não me atualizava os preços. vou utilizar o getprices a devolver uma lista de coins atualizada.
 
         public void RemoveCoin(string coinName)
         {
@@ -110,18 +108,15 @@ namespace CryptoQuoteAPI
             return _priceUpdateInSeconds;
         }
 
-        public void GetPrices(out List<decimal> prices, out List<string> coins)
+        public void GetPrices(out List<Coin> coins)
         {
-            prices = new List<decimal>();
-            coins = new List<string>();
+            coins = new List<Coin>();
 
             foreach (var coin in _coins)
             {
                 // Tenho que devolver a lista dos preços atualizados, por isso tenho utilizar o UpdateExhangeRate para ter a lista atualizada de preços,
-                // para conseguir adicionar os preços e os nomes das coins às listas criadas.
                 coin.UpdateExchangeRate(_priceUpdateInSeconds);
-                prices.Add(coin.ExchangeRateInEur);
-                coins.Add(coin.Name);
+                coins.Add(coin);
             }
             Save();
         }
@@ -139,7 +134,7 @@ namespace CryptoQuoteAPI
             //}
 
             //Criação json a partir da Lista de Coins
-            
+
             string json = System.Text.Json.JsonSerializer.Serialize(_coins);
             File.WriteAllText(filePath, json);
         }
@@ -156,6 +151,66 @@ namespace CryptoQuoteAPI
                 var jason = File.ReadAllText(filePath);
                 _coins = System.Text.Json.JsonSerializer.Deserialize<List<Coin>>(jason);
             }
+        }
+
+        public void SaveInvestor(Investor investor)
+        {
+            var fileName = "Investors.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            string jsonInvestor = JsonSerializer.Serialize<Investor>(investor);
+
+            File.WriteAllText(filePath, jsonInvestor);
+        }
+
+        public Investor ReadInvestor()
+        {
+            var fileName = "Investors.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            var fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists)
+            {
+                var json = File.ReadAllText(filePath);
+                var investor = JsonSerializer.Deserialize<Investor>(json);
+                return investor;
+            }
+            else
+            {
+                return new Investor();
+            }
+        }
+
+        public void SaveAdministrator(Administrator administrator)
+        {
+            var fileName = "Administrator.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            string json = System.Text.Json.JsonSerializer.Serialize<Administrator>(administrator);
+            File.WriteAllText(filePath, json);
+        }
+
+        public Administrator ReadAdministrator()
+        {
+            var fileName = "Administrator.json";
+            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            string filePath = Path.Combine(directory, fileName);
+
+            var fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists)
+            {
+                var json = File.ReadAllText(filePath);
+                var administrator = System.Text.Json.JsonSerializer.Deserialize<Administrator>(json);
+                return administrator; 
+            }
+            else
+            {
+                return new Administrator(); 
+            }
+
         }
 
         /*   public API(string name, decimal value)

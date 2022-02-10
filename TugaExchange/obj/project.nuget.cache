@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "r5zDKOwMAMBSuHREqsKA+5AzKA413XtDvMwUvtukFc88NnKqdLDtpyTNpRiEVXEP+uN87kGrZ3oQlW/2rTqt3w==",
+  "dgSpecHash": "kh6ZfvIuOFfkVfuA5roprF0v13XAuzxLWtFa6xpyIFhMGdODCI+gJVMRdZTq2ummtDU1tYJIzhGvmwh3FOi6aQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\TugaExchange\\TugaExchange.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Utilizador\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

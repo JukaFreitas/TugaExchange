@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "3crud3/i3JI2L7sIG++sfIDjMWcNpWTq4ixfzeE99z7MNQOrojnPGZ8C2ENlnAn6g7j+JN5fdHWg/EP2ME1nuA==",
+  "dgSpecHash": "dL9NCa2zc3cb0leN+5ix+2gyRj6RmM+LLFU53B6GSLLGfueXnALFTBGpFdZUzW30JxoEZhmVxWKk7DUxmneffg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Utilizador\\Desktop\\Restart2\\C#_repositorio\\TugaExchange\\CryptoQuoteAPI\\CryptoQuoteAPI.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Utilizador\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

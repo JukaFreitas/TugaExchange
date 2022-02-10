@@ -15,9 +15,9 @@ namespace TugaExchange
         {
             _api = new API();
             _api.Read();
-            _investor = new Investor();
-            _administrator = new Administrator();
-            _administrator.Read();
+            //Estou a retornar um new Investor, no metodo Read, logo se ele não encontrar, vai criar um novo. 
+            _investor = _api.ReadInvestor();
+            _administrator = _api.ReadAdministrator(); 
 
             List<string> menuPrincipal = new List<string>()
             {
@@ -94,10 +94,10 @@ namespace TugaExchange
                     Thread.Sleep(5000);
                     break;
 
-                case "3":
+                case "3": // Relatorio de comissões
                     foreach (var comission in _administrator.Comissions)
                     {
-                        Console.WriteLine(comission.CoinName + "|" + comission.ComissionValue + "|" + comission.Date + "|" + comission.IsBuy);
+                        Console.WriteLine(comission.CoinName + "|" + comission.ComissionValue + "|" + comission.Date + "|" + comission.Type);
                     }
 
                     Thread.Sleep(3000);
@@ -130,6 +130,7 @@ namespace TugaExchange
                     Console.WriteLine("Insira o montante:");
                     var cashInEuros = decimal.Parse(Console.ReadLine());
                     _investor.Deposit(cashInEuros);
+                    _api.SaveInvestor(_investor); 
                     break;
 
                 case "2": // Comprar moeda
@@ -141,21 +142,27 @@ namespace TugaExchange
                         Console.WriteLine("Quantidade:");
                         var coinQuantity = decimal.Parse(Console.ReadLine());
                         bool existsCoin = false;
-
-                        foreach (var coin in _api.GetCoins())
+                        _api.GetPrices(out List<Coin> updatedCoinsBuy);
+                        foreach (var coin in updatedCoinsBuy)
                         {
                             if (coinName == coin.Name)
                             {
                                 // return do coinIneuros = coinToBuy.ExchangeRateInEur * quantity; para calcular o total da comissão.
-                                var coinInEuros = _investor.BuyCoin(coin, coinQuantity);
-                                var newComission = new Comission(coinName, DateTime.Now, coinInEuros * _administrator.ComissionRate, "Buy");
+                                var comissionValue = _investor.BuyCoin(coin, coinQuantity, _administrator.ComissionRate);
+                                // ja insiro o valor calculado da venda/compra; 
+                                var newComission = new Comission(coinName, DateTime.Now, comissionValue, "Compra");
                                 _administrator.AddComission(newComission);
                                 existsCoin = true;
                                 break;
                             }
                         }
 
-                        if (!existsCoin)
+                        if (existsCoin)
+                        {
+                            _api.SaveInvestor(_investor);
+                            _api.SaveAdministrator(_administrator); 
+                        }
+                        else
                         {
                             throw new Exception("A moeda não existe.");
                         }
@@ -177,19 +184,26 @@ namespace TugaExchange
                         var coinQuant = decimal.Parse(Console.ReadLine());
                         bool existsCoin = false;
 
-                        foreach (var coin in _api.GetCoins())
+                        _api.GetPrices(out List<Coin> updatedCoinsSell);
+                        foreach (var coin in updatedCoinsSell)
                         {
                             if (coinToSell == coin.Name)
                             {
-                                var coinInEuros = _investor.SellCoin(coin, coinQuant);
-                                var newComission = new Comission(coinToSell, DateTime.Now, coinInEuros * _administrator.ComissionRate, "Sell");
+                                //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador. 
+                                var comissionValue = _investor.SellCoin(coin, coinQuant, _administrator.ComissionRate);
+                                var newComission = new Comission(coinToSell, DateTime.Now, comissionValue, "Venda");
                                 _administrator.AddComission(newComission);
                                 existsCoin = true;
                                 break;
                             }
                         }
 
-                        if (!existsCoin)
+                        if (existsCoin)
+                        {
+                            _api.SaveInvestor(_investor);
+                            _api.SaveAdministrator(_administrator); 
+                        }
+                        else
                         {
                             throw new Exception("A moeda não existe.");
                         }
@@ -201,16 +215,38 @@ namespace TugaExchange
                     Thread.Sleep(3000);
                     break;
 
-                case "4": // mostrar portfólio
+                case "4": //portfolio 
+                    /*for (int i = 0; i < _investor.Coins.Count; i++)
+                    {
+                        Console.WriteLine(_investor.Coins[i]);
+                    }*/
+                    for (int i = 0; i < _investor.Coins.Count; i++)
+                    {
+                        _api.GetPrices(out List<Coin> coins);
+                        foreach (var updatedCoin in coins)
+                        {
+                            if (updatedCoin.Name == _investor.Coins[i].Name)
+                            {
+                                var valueInEuros = _investor.CoinsQuantities[i] * updatedCoin.ExchangeRateInEur;
+                                Console.WriteLine(updatedCoin.Name + "|" + _investor.CoinsQuantities[i] + "|" + valueInEuros + "|" + updatedCoin.ExchangeRateInEur + "|" + updatedCoin.LastExchangeDate);
+                            }
+                        }
+                    }
+                    Thread.Sleep(5000);
+
+                    // mostrar portfólio
                     break;
 
                 case "5": // sera que há execçõeS?
-                    _api.GetPrices(out List<decimal> prices, out List<string> coins);
-
-                    for (int i = 0; i < coins.Count; i++)
+                    _api.GetPrices(out List<Coin> updatedCoins);
+                    foreach (var coin in updatedCoins)
+                    {
+                        Console.WriteLine(coin.Name + "|" + Math.Round(coin.ExchangeRateInEur,2));
+                    }
+                   /* for (int i = 0; i < coins.Count; i++)
                     {
                         Console.WriteLine(coins[i] + "|" + Math.Round(prices[i], 2));
-                    }
+                    }*/
                     Thread.Sleep(5000);
                     break;
 

@@ -9,15 +9,15 @@ namespace CryptoQuoteAPI
         private decimal _comissionValue;
         private string _type; 
 
-        public bool IsBuy
+        public string Type
         {
             get 
             {
-                return _isBuy;
+                return _type;
             }
             set
             {
-                _isBuy = value;
+                _type = value;
             }
         }
 
@@ -57,12 +57,17 @@ namespace CryptoQuoteAPI
             }
         }
 
-        public Comission(string name, DateTime dateNow, decimal comissionValue, bool isBuy)
+        public Comission()
+        {
+
+        }
+
+        public Comission(string name, DateTime dateNow, decimal comissionValue, string type)
         {
             _coinName = name;
             _date = dateNow;
             _comissionValue = comissionValue;
-            _isBuy = ; 
+            _type = type;  
             
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace CryptoQuoteAPI
@@ -42,34 +41,7 @@ namespace CryptoQuoteAPI
         public void AddComission(Comission newcomission)
         {
             _comissions.Add(newcomission);
-            Save(); 
-
-        }
-
-        public void Save()
-        {
-            var fileName = "Comissions.json";
-            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
-            string filePath = Path.Combine(directory, fileName);
-
-            //Criação json a partir da Lista de Coins
-            string json = System.Text.Json.JsonSerializer.Serialize(_comissions);
-            File.WriteAllText(filePath, json);
-        }
-
-        public void Read()
-        {
-            var fileName = "Comissions.json";
-            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
-            string filePath = Path.Combine(directory, fileName);
-
-            var fileInfo = new FileInfo(filePath);
-            if (fileInfo.Exists)
-            {
-                var jason = File.ReadAllText(filePath);
-                _comissions = System.Text.Json.JsonSerializer.Deserialize<List<Comission>>(jason);
-            }
-
+           
         }
     }
 }

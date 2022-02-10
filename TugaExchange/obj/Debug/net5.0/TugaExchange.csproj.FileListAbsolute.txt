@@ -33,3 +33,4 @@ C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\TugaExchange\ob
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\TugaExchange\bin\Debug\net5.0\CryptoQuoteAPI.dll
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\TugaExchange\bin\Debug\net5.0\CryptoQuoteAPI.pdb
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\TugaExchange\obj\Debug\net5.0\TugaExchange.csproj.CopyComplete
+C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\TugaExchange\bin\Debug\net5.0\Newtonsoft.Json.dll

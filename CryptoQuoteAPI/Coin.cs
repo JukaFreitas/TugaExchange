@@ -82,7 +82,7 @@ namespace CryptoQuoteAPI
                 // valor das moedas 
                _exchangeRateInEur += _exchangeRateInEur * Utils.GetRandomDecimal(-0.005m,0.005m);
                 // data e hora atualizada por cada atualização 
-                _lastExchangeDate = _lastExchangeDate.AddSeconds(priceUpdateInSeconds); 
+                _lastExchangeDate = _lastExchangeDate.AddSeconds(priceUpdateInSeconds);
             }
         }
     }

@@ -57,15 +57,15 @@ namespace CryptoQuoteAPI
             _fundsInEuros += cashInEuros;
         }
 
-        public decimal BuyCoin(Coin coinToBuy, decimal quantity)
+        public decimal BuyCoin(Coin coinToBuy, decimal quantity, decimal comissionRate)
         {
             //converter a quantidade que quero comprar, para euros.
             var coinInEuros = coinToBuy.ExchangeRateInEur * quantity;
-
-            if (_fundsInEuros >= coinInEuros)
+            var comissionValue = coinInEuros * comissionRate;
+            if (_fundsInEuros >= coinInEuros + comissionValue)
             {
                 var index = _coins.FindIndex(coin => coin.Name.Equals(coinToBuy.Name));
-                // se é -1 indica que o elemento não está na lista. 
+                // se é -1 indica que o elemento não está na lista.
                 if (index != -1)
                 {
                     _coinsQuantities[index] += quantity;
@@ -76,7 +76,8 @@ namespace CryptoQuoteAPI
                     _coinsQuantities.Add(quantity);
                 }
                 _fundsInEuros -= coinInEuros;
-                return coinInEuros;
+
+                return comissionValue;
             }
             else
             {
@@ -84,22 +85,24 @@ namespace CryptoQuoteAPI
             }
         }
 
-        public decimal SellCoin(Coin coinToSell, decimal quantity)
+        public decimal SellCoin(Coin coinToSell, decimal quantity, decimal comissionRate)
         {
             var index = _coins.FindIndex(coin => coin.Name.Equals(coinToSell.Name));
             var coinInEuros = coinToSell.ExchangeRateInEur * quantity;
 
             if (index != -1 && quantity <= _coinsQuantities[index])
             {
+                var comissionValue = coinInEuros * comissionRate; 
                 _coinsQuantities[index] -= quantity;
-                _fundsInEuros += coinInEuros;
-
+                _fundsInEuros += (coinInEuros - comissionValue);
+                
                 if (_coinsQuantities[index] == 0)
                 {
                     _coinsQuantities.RemoveAt(index);
                     _coins.RemoveAt(index);
                 }
-                return coinInEuros;
+                return comissionValue;
+                
             }
             else if (index == -1)
             {

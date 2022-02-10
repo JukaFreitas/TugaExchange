@@ -10,7 +10,6 @@ namespace TugaExchange
             var menu = new Menu();
             menu.Initialize(); 
             
-
         }
     }
 }
