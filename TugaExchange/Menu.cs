@@ -15,9 +15,9 @@ namespace TugaExchange
         {
             _api = new API();
             _api.Read();
-            //Estou a retornar um new Investor, no metodo Read, logo se ele não encontrar, vai criar um novo. 
+            //Estou a retornar um new Investor, no metodo Read, logo se ele não encontrar, vai criar um novo.
             _investor = _api.ReadInvestor();
-            _administrator = _api.ReadAdministrator(); 
+            _administrator = _api.ReadAdministrator();
 
             List<string> menuPrincipal = new List<string>()
             {
@@ -130,7 +130,7 @@ namespace TugaExchange
                     Console.WriteLine("Insira o montante:");
                     var cashInEuros = decimal.Parse(Console.ReadLine());
                     _investor.Deposit(cashInEuros);
-                    _api.SaveInvestor(_investor); 
+                    _api.SaveInvestor(_investor);
                     break;
 
                 case "2": // Comprar moeda
@@ -149,7 +149,7 @@ namespace TugaExchange
                             {
                                 // return do coinIneuros = coinToBuy.ExchangeRateInEur * quantity; para calcular o total da comissão.
                                 var comissionValue = _investor.BuyCoin(coin, coinQuantity, _administrator.ComissionRate);
-                                // ja insiro o valor calculado da venda/compra; 
+                                // ja insiro o valor calculado da venda/compra;
                                 var newComission = new Comission(coinName, DateTime.Now, comissionValue, "Compra");
                                 _administrator.AddComission(newComission);
                                 existsCoin = true;
@@ -160,7 +160,7 @@ namespace TugaExchange
                         if (existsCoin)
                         {
                             _api.SaveInvestor(_investor);
-                            _api.SaveAdministrator(_administrator); 
+                            _api.SaveAdministrator(_administrator);
                         }
                         else
                         {
@@ -189,7 +189,7 @@ namespace TugaExchange
                         {
                             if (coinToSell == coin.Name)
                             {
-                                //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador. 
+                                //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador.
                                 var comissionValue = _investor.SellCoin(coin, coinQuant, _administrator.ComissionRate);
                                 var newComission = new Comission(coinToSell, DateTime.Now, comissionValue, "Venda");
                                 _administrator.AddComission(newComission);
@@ -201,7 +201,7 @@ namespace TugaExchange
                         if (existsCoin)
                         {
                             _api.SaveInvestor(_investor);
-                            _api.SaveAdministrator(_administrator); 
+                            _api.SaveAdministrator(_administrator);
                         }
                         else
                         {
@@ -215,7 +215,7 @@ namespace TugaExchange
                     Thread.Sleep(3000);
                     break;
 
-                case "4": //portfolio 
+                case "4": //portfolio
                     /*for (int i = 0; i < _investor.Coins.Count; i++)
                     {
                         Console.WriteLine(_investor.Coins[i]);
@@ -241,12 +241,12 @@ namespace TugaExchange
                     _api.GetPrices(out List<Coin> updatedCoins);
                     foreach (var coin in updatedCoins)
                     {
-                        Console.WriteLine(coin.Name + "|" + Math.Round(coin.ExchangeRateInEur,2));
+                        Console.WriteLine(coin.Name + "|" + Math.Round(coin.ExchangeRateInEur, 2));
                     }
-                   /* for (int i = 0; i < coins.Count; i++)
-                    {
-                        Console.WriteLine(coins[i] + "|" + Math.Round(prices[i], 2));
-                    }*/
+                    /* for (int i = 0; i < coins.Count; i++)
+                     {
+                         Console.WriteLine(coins[i] + "|" + Math.Round(prices[i], 2));
+                     }*/
                     Thread.Sleep(5000);
                     break;
 
