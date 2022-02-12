@@ -8,7 +8,7 @@ namespace TugaExchange
     {
         static void Main(string[] args)
         {
-            var dirInfo = new DirectoryInfo(@"C:temp\tugaExchange");
+            var dirInfo = new DirectoryInfo(@"C:\temp\tugaexchange");
             if (!dirInfo.Exists)
             {
                dirInfo.Create();

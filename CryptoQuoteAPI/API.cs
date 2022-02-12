@@ -124,7 +124,7 @@ namespace CryptoQuoteAPI
         public void Save()
         {
             var fileName = "Coins.json";
-            var directory = @"C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             //var fileInfo = new FileInfo(filePath);
@@ -142,7 +142,7 @@ namespace CryptoQuoteAPI
         public void Read()
         {
             var fileName = "Coins.json";
-            var directory = @"C:temp\tugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             var fileInfo = new FileInfo(filePath);
@@ -156,7 +156,7 @@ namespace CryptoQuoteAPI
         public void SaveInvestor(Investor investor)
         {
             var fileName = "Investors.json";
-            var directory = @"C:temp\tugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             string jsonInvestor = JsonSerializer.Serialize<Investor>(investor);
@@ -167,7 +167,7 @@ namespace CryptoQuoteAPI
         public Investor ReadInvestor()
         {
             var fileName = "Investors.json";
-            var directory = @"C:temp\tugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             var fileInfo = new FileInfo(filePath);
@@ -186,7 +186,7 @@ namespace CryptoQuoteAPI
         public void SaveAdministrator(Administrator administrator)
         {
             var fileName = "Administrator.json";
-            var directory = @"C:temp\tugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             string json = System.Text.Json.JsonSerializer.Serialize<Administrator>(administrator);
@@ -196,7 +196,7 @@ namespace CryptoQuoteAPI
         public Administrator ReadAdministrator()
         {
             var fileName = "Administrator.json";
-            var directory = @"C:temp\tugaExchange";
+            var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
             var fileInfo = new FileInfo(filePath);
