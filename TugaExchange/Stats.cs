@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TugaExchange
 {
-    class Stats
+    internal static class Stats
     {
         public static void Print(List<string> menu)
         {
@@ -16,13 +13,42 @@ namespace TugaExchange
             }
         }
 
-        public static string ReadString(string message)
+        public static int OptionToNum(string message)
         {
             Console.WriteLine(message);
             var opcao = Console.ReadLine();
+            opcao.Trim();
 
-            return opcao;
+            if (!int.TryParse(opcao, out int num))
+            {
+                throw new Exception("Tem de inserir um número");
+            }
 
+            return num;
+        }
+
+        public static string CoinNameToUpper(string message)
+        {
+            Console.WriteLine(message);
+            var name = Console.ReadLine();
+            var coinNameUpper = name.Replace(" ", "").ToUpper();
+            return coinNameUpper;
+        }
+
+        public static decimal CoinQuantityValidation(string message)
+        {
+            Console.WriteLine(message);
+            var cashInEuros = decimal.TryParse(Console.ReadLine(), out decimal cashInDecimals);
+            if (cashInEuros == false)
+            {
+                throw new Exception("Insira montante válido\n" + "Exemplo: 50,50");
+            }
+            return cashInDecimals; 
+        }
+
+        public static string MessageToAdvance(string message)
+        {
+            return message + "\nPrima qualquer tecla para avançar"; 
         }
     }
 }

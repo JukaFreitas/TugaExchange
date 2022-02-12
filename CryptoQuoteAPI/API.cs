@@ -55,7 +55,7 @@ namespace CryptoQuoteAPI
             {
                 if (coin.Name.Equals(coinName))
                 {
-                    throw new Exception("A moeda já consta na base de dados.\n Tente novamente:");
+                    throw new Exception("A moeda já consta na base de dados.\n");
                 }
             }
             // Criação de nava moeda, pois não é necessário antes da verificação se há uma igual.

@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace TugaExchange
 {
-    class Program 
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var dirInfo = new DirectoryInfo(@"C:\temp\tugaexchange");
             if (!dirInfo.Exists)
             {
-               dirInfo.Create();
+                dirInfo.Create();
             }
 
             var menu = new Menu();
-            menu.Initialize(); 
-            
+            menu.Initialize();
         }
     }
 }

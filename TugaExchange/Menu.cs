@@ -21,31 +21,42 @@ namespace TugaExchange
 
             List<string> menuPrincipal = new List<string>()
             {
-                "Investidor",
-                "Administrador"
+                "1) Investidor",
+                "2) Administrador",
+                "3) Sair"
             };
 
             do
             {
-                Stats.Print(menuPrincipal);
-
-                var opcao = Stats.ReadString("Insira a opção pretendida:");
-
-                Console.Clear();
-
-                if (opcao.Equals("1"))
+                try
                 {
-                    MenuInvestidor();
+                    Console.Clear();
+                    Stats.Print(menuPrincipal);
+
+                    var opcao = Stats.OptionToNum("Insira a opção pretendida:");
+
+                    if (opcao == 1)
+                    {
+                        MenuInvestidor();
+                    }
+                    else if (opcao == 2)
+                    {
+                        MenuAdministrador();
+                    }
+                    else if (opcao == 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception("Tem de inserir opções válidas");
+                    }
                 }
-                else if (opcao.Equals("2"))
+                catch (Exception ex)
                 {
-                    MenuAdministrador();
+                    Console.WriteLine(Stats.MessageToAdvance(ex.Message));
+                    Console.ReadKey();
                 }
-                else
-                {
-                    break;
-                }
-                Console.Clear();
             } while (true);
         }
 
@@ -58,54 +69,58 @@ namespace TugaExchange
                 "3) Ver relatório das comissões",
                 "4) Sair"
             };
-
-            Stats.Print(menuAdministrador);
-
-            var opcaoAdministrador = Stats.ReadString("Insira a opção pretendida:");
-
-            switch (opcaoAdministrador)
+            // Try catchs dentro de cada sub menu, para me manter neles e não voltar sempre para o menu principal.
+            do
             {
-                case "1": // Adicionar moeda
-                    try
-                    {
-                        Console.WriteLine("Insira o nome da moeda:");
-                        var name = Console.ReadLine();
+                try
+                {
+                    Console.Clear();
+                    Stats.Print(menuAdministrador);
 
-                        _api.AddCoin(name);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                    Thread.Sleep(5000);
-                    break;
+                    var opcaoAdministrador = Stats.OptionToNum("Insira a opção pretendida:");
 
-                case "2": // Remover moeda
-                    try
+                    if (!(opcaoAdministrador >= 1 && opcaoAdministrador <= 4))
                     {
-                        Console.WriteLine("Insira o nome da moeda a remover:");
-                        var nameToRemove = Console.ReadLine();
-                        _api.RemoveCoin(nameToRemove);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                    Thread.Sleep(5000);
-                    break;
-
-                case "3": // Relatorio de comissões
-                    foreach (var comission in _administrator.Comissions)
-                    {
-                        Console.WriteLine(comission.CoinName + "|" + comission.ComissionValue + "|" + comission.Date + "|" + comission.Type);
+                        throw new Exception("Tem de inserir um opção entre 1 e 4");
                     }
 
-                    Thread.Sleep(3000);
-                    break;
+                    Console.Clear();
+                    switch (opcaoAdministrador)
+                    {
+                        case 1: // Adicionar moeda
+                            //CoinNameValidation return string e o AddCoin recebe uma string
+                            _api.AddCoin(Stats.CoinNameToUpper("Insira o nome da moeda a adicionar:"));
+                            Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso."));
+                            break;
 
-                default: // sair
-                    break;
-            }
+                        case 2: // Remover moeda
+                            _api.RemoveCoin(Stats.CoinNameToUpper("Insira o nome da moeda a remover"));
+                            Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+                            break;
+
+                        case 3: // Relatorio de comissões
+                            if (_administrator.Comissions.Count == 0)
+                            {
+                                Console.WriteLine("Não foi efetuada nenhuma transação no sistema");
+                            }
+                            foreach (var comission in _administrator.Comissions)
+                            {
+                                Console.WriteLine(comission.CoinName + "|" + comission.ComissionValue + "|" + comission.Date + "|" + comission.Type);
+                            }
+                            Console.WriteLine(Stats.MessageToAdvance(""));
+                            break;
+
+                        default: // sair
+                            // Return sem valor, sai do metodo, de forma a sair do ciclo do while e voltar ao menu principal.
+                            return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(Stats.MessageToAdvance(ex.Message));
+                }
+                Console.ReadKey();
+            } while (true);
         }
 
         private void MenuInvestidor()
@@ -119,140 +134,148 @@ namespace TugaExchange
                 "5) Mostrar Câmbio",
                 "6) Sair"
             };
-
-            Stats.Print(menuInvestidor);
-
-            var opcaoInvestidor = Stats.ReadString("Insira a opção pretendida:");
-
-            switch (opcaoInvestidor)
+            do
             {
-                case "1": //Depositar
-                    Console.WriteLine("Insira o montante:");
-                    var cashInEuros = decimal.Parse(Console.ReadLine());
-                    _investor.Deposit(cashInEuros);
-                    _api.SaveInvestor(_investor);
-                    break;
+                try
+                {
+                    Console.Clear();
+                    Stats.Print(menuInvestidor);
 
-                case "2": // Comprar moeda
-                    try
+                    var opcaoInvestidor = Stats.OptionToNum("Insira a opção pretendida:");
+
+                    if (!(opcaoInvestidor >= 1 && opcaoInvestidor <= 6))
                     {
-                        Console.WriteLine("Insira a moeda e a quantidade a comprar");
-                        Console.WriteLine("Moeda:");
-                        var coinName = Console.ReadLine();
-                        Console.WriteLine("Quantidade:");
-                        var coinQuantity = decimal.Parse(Console.ReadLine());
-                        bool existsCoin = false;
-                        _api.GetPrices(out List<Coin> updatedCoinsBuy);
-                        foreach (var coin in updatedCoinsBuy)
-                        {
-                            if (coinName == coin.Name)
-                            {
-                                // return do coinIneuros = coinToBuy.ExchangeRateInEur * quantity; para calcular o total da comissão.
-                                var comissionValue = _investor.BuyCoin(coin, coinQuantity, _administrator.ComissionRate);
-                                // ja insiro o valor calculado da venda/compra;
-                                var newComission = new Comission(coinName, DateTime.Now, comissionValue, "Compra");
-                                _administrator.AddComission(newComission);
-                                existsCoin = true;
-                                break;
-                            }
-                        }
+                        throw new Exception("Tem de inserir um opção entre 1 e 6");
+                    }
 
-                        if (existsCoin)
-                        {
+                    Console.Clear();
+                    switch (opcaoInvestidor)
+                    {
+                        case 1: //Depositar
+                            var cashInDecimals = Stats.CoinQuantityValidation("Insira o montante a depositar em Euros:");
+                            _investor.Deposit(cashInDecimals);
                             _api.SaveInvestor(_investor);
-                            _api.SaveAdministrator(_administrator);
-                        }
-                        else
-                        {
-                            throw new Exception("A moeda não existe.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                    Thread.Sleep(3000);
-                    break;
 
-                case "3": // vender moeda
-                    try
-                    {
-                        Console.WriteLine("Insira a moeda e a quantidade a vender");
-                        Console.WriteLine("Moeda");
-                        var coinToSell = Console.ReadLine();
-                        Console.WriteLine("Quantidade");
-                        var coinQuant = decimal.Parse(Console.ReadLine());
-                        bool existsCoin = false;
+                            Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+                            break;
 
-                        _api.GetPrices(out List<Coin> updatedCoinsSell);
-                        foreach (var coin in updatedCoinsSell)
-                        {
-                            if (coinToSell == coin.Name)
+                        case 2: // Comprar moeda
                             {
-                                //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador.
-                                var comissionValue = _investor.SellCoin(coin, coinQuant, _administrator.ComissionRate);
-                                var newComission = new Comission(coinToSell, DateTime.Now, comissionValue, "Venda");
-                                _administrator.AddComission(newComission);
-                                existsCoin = true;
-                                break;
+                                Console.WriteLine("Insira a moeda e a quantidade a comprar");
+                                var coinNameFinal = Stats.CoinNameToUpper("Moeda:");
+                                var coinQuantityDecimals = Stats.CoinQuantityValidation("Quantidade:");
+                                bool existsCoin = false;
+                                _api.GetPrices(out List<Coin> updatedCoinsBuy);
+                                foreach (var coin in updatedCoinsBuy)
+                                {
+                                    if (coinNameFinal == coin.Name)
+                                    {
+                                        // return do coinIneuros = coinToBuy.ExchangeRateInEur * quantity; para calcular o total da comissão.
+                                        var comissionValue = _investor.BuyCoin(coin, coinQuantityDecimals, _administrator.ComissionRate);
+                                        // ja insiro o valor calculado da venda/compra;
+                                        var newComission = new Comission(coinNameFinal, DateTime.Now, comissionValue, "Compra");
+                                        _administrator.AddComission(newComission);
+                                        existsCoin = true;
+                                        break;
+                                    }
+                                }
+
+                                if (existsCoin)
+                                {
+                                    _api.SaveInvestor(_investor);
+                                    _api.SaveAdministrator(_administrator);
+                                    Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso."));
+                                }
+                                else
+                                {
+                                    throw new Exception("A moeda não existe.");
+                                }
                             }
-                        }
+                            break;
 
-                        if (existsCoin)
-                        {
-                            _api.SaveInvestor(_investor);
-                            _api.SaveAdministrator(_administrator);
-                        }
-                        else
-                        {
-                            throw new Exception("A moeda não existe.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex); ;
-                    }
-                    Thread.Sleep(3000);
-                    break;
-
-                case "4": //portfolio
-                    /*for (int i = 0; i < _investor.Coins.Count; i++)
-                    {
-                        Console.WriteLine(_investor.Coins[i]);
-                    }*/
-                    for (int i = 0; i < _investor.Coins.Count; i++)
-                    {
-                        _api.GetPrices(out List<Coin> coins);
-                        foreach (var updatedCoin in coins)
-                        {
-                            if (updatedCoin.Name == _investor.Coins[i].Name)
+                        case 3: // vender moeda
                             {
-                                var valueInEuros = _investor.CoinsQuantities[i] * updatedCoin.ExchangeRateInEur;
-                                Console.WriteLine(updatedCoin.Name + "|" + _investor.CoinsQuantities[i] + "|" + valueInEuros + "|" + updatedCoin.ExchangeRateInEur + "|" + updatedCoin.LastExchangeDate);
+                                Console.WriteLine("Insira a moeda e a quantidade a vender");
+                                var coinNameFinal = Stats.CoinNameToUpper("Moeda:");
+                                var coinQuantDecimal = Stats.CoinQuantityValidation("Quantidade:");
+                                bool existsCoin = false;
+
+                                _api.GetPrices(out List<Coin> updatedCoinsSell);
+
+                                foreach (var coin in updatedCoinsSell)
+                                {
+                                    if (coinNameFinal == coin.Name)
+                                    {
+                                        //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador.
+                                        var comissionValue = _investor.SellCoin(coin, coinQuantDecimal, _administrator.ComissionRate);
+                                        var newComission = new Comission(coinNameFinal, DateTime.Now, comissionValue, "Venda");
+                                        _administrator.AddComission(newComission);
+                                        existsCoin = true;
+                                        break;
+                                    }
+                                }
+
+                                if (existsCoin)
+                                {
+                                    _api.SaveInvestor(_investor);
+                                    _api.SaveAdministrator(_administrator);
+                                    Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+                                }
+                                else
+                                {
+                                    throw new Exception("A moeda não existe");
+                                }
                             }
-                        }
+                            break;
+
+                        case 4: //portfolio
+                            Console.WriteLine("EUR" + "|" + Math.Round(_investor.FundsInEuros, 2) + "|" + Math.Round(_investor.FundsInEuros, 2) + "|" + "1");
+                            _api.GetPrices(out List<Coin> coins);
+                            //Total do dinheiro na conta, que começa sempre com o primeiro deposito. 
+                            var totalEuros = _investor.FundsInEuros; 
+
+                            for (int i = 0; i < _investor.Coins.Count; i++)
+                            {
+                                foreach (var updatedCoin in coins)
+                                {
+                                    if (updatedCoin.Name == _investor.Coins[i].Name)
+                                    {
+                                        var valueInEuros = _investor.CoinsQuantities[i] * updatedCoin.ExchangeRateInEur;
+                                        totalEuros += valueInEuros; 
+                                        Console.WriteLine(updatedCoin.Name + "|" + _investor.CoinsQuantities[i] + "|" + Math.Round(valueInEuros, 2) +
+                                                          "|" + Math.Round(updatedCoin.ExchangeRateInEur, 2));
+                                    }
+                                }
+                            }
+
+                            Console.WriteLine("\nTotal em EUR: " + Math.Round(totalEuros,2));
+                            Console.WriteLine(Stats.MessageToAdvance(""));
+                            break;
+
+                        case 5:
+                            _api.GetPrices(out List<Coin> updatedCoins);
+                            if (updatedCoins.Count==0)
+                            {
+                                Console.WriteLine("Não existem moedas inseridas no sistema");
+                            }
+                            foreach (var coin in updatedCoins)
+                            {
+                                Console.WriteLine(coin.Name + "|" + Math.Round(coin.ExchangeRateInEur, 2));
+                            }
+                            Console.WriteLine(Stats.MessageToAdvance(""));
+                            break;
+
+                        default: // sair
+                            return;
                     }
-                    Thread.Sleep(5000);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(Stats.MessageToAdvance(ex.Message));
+                }
+                Console.ReadKey();
 
-                    // mostrar portfólio
-                    break;
-
-                case "5": // sera que há execçõeS?
-                    _api.GetPrices(out List<Coin> updatedCoins);
-                    foreach (var coin in updatedCoins)
-                    {
-                        Console.WriteLine(coin.Name + "|" + Math.Round(coin.ExchangeRateInEur, 2));
-                    }
-                    /* for (int i = 0; i < coins.Count; i++)
-                     {
-                         Console.WriteLine(coins[i] + "|" + Math.Round(prices[i], 2));
-                     }*/
-                    Thread.Sleep(5000);
-                    break;
-
-                default: // sair
-                    break;
-            }
+            } while (true);
         }
     }
 }

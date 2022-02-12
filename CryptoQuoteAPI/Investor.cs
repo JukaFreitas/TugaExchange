@@ -75,7 +75,7 @@ namespace CryptoQuoteAPI
                     _coins.Add(coinToBuy);
                     _coinsQuantities.Add(quantity);
                 }
-                _fundsInEuros -= coinInEuros;
+                _fundsInEuros -= (coinInEuros + comissionValue);
 
                 return comissionValue;
             }
