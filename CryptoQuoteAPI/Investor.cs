@@ -113,5 +113,17 @@ namespace CryptoQuoteAPI
                 throw new Exception("Só pode vender no limite da quantidade que tem na carteira");
             }
         }
+
+        public decimal SellAllCoin(Coin coinToSell, decimal comissionRate)
+        {
+            var index = _coins.FindIndex(coin => coin.Name.Equals(coinToSell.Name));
+            if (index == -1)
+            {
+                throw new Exception("O investidor não tem esta moeda.");
+            }
+            var coinInEuros = coinToSell.ExchangeRateInEur * _coinsQuantities[index];
+            return SellCoin(coinToSell, _coinsQuantities[index], comissionRate); 
+
+        }
     }
 }

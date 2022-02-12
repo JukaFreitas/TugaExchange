@@ -1,7 +1,6 @@
 ﻿using CryptoQuoteAPI;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace TugaExchange
 {
@@ -94,8 +93,35 @@ namespace TugaExchange
                             break;
 
                         case 2: // Remover moeda
-                            _api.RemoveCoin(Stats.CoinNameToUpper("Insira o nome da moeda a remover"));
-                            Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+                            var coinName = Stats.CoinNameToUpper("Insira o nome da moeda a remover");
+                            _api.GetPrices(out List<Coin> updatedCoins);
+                            var existCoins = false;
+                            foreach (var coin in updatedCoins)
+                            {
+                                try
+                                {
+                                    if (coin.Name.Equals(coinName))
+                                    {
+                                        existCoins = true;
+                                        var comissionValue = _investor.SellAllCoin(coin, _administrator.ComissionRate);
+                                        _administrator.AddComission(coinName, comissionValue, DateTime.Now, "Venda");       
+                                    }
+                                }// Se apanhar o erro, pq o investidor não tem a moeda, o catch apanha o erro e prossegue no ciclo
+                                catch
+                                {
+                                }
+                            }
+                            if (existCoins == false)
+                            {
+                                throw new Exception("A moeda não existe no sistema");
+                            }
+                            else
+                            {
+                                _api.RemoveCoin(coinName);
+                                _api.SaveInvestor(_investor);
+                                _api.SaveAdministrator(_administrator);
+                                Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+                            }
                             break;
 
                         case 3: // Relatorio de comissões
@@ -173,8 +199,7 @@ namespace TugaExchange
                                         // return do coinIneuros = coinToBuy.ExchangeRateInEur * quantity; para calcular o total da comissão.
                                         var comissionValue = _investor.BuyCoin(coin, coinQuantityDecimals, _administrator.ComissionRate);
                                         // ja insiro o valor calculado da venda/compra;
-                                        var newComission = new Comission(coinNameFinal, DateTime.Now, comissionValue, "Compra");
-                                        _administrator.AddComission(newComission);
+                                        _administrator.AddComission(coinNameFinal, comissionValue, DateTime.Now, "Compra");
                                         existsCoin = true;
                                         break;
                                     }
@@ -208,8 +233,7 @@ namespace TugaExchange
                                     {
                                         //SellCoin está a retornar a comissionValue, valor da comissão que fica para o administrador.
                                         var comissionValue = _investor.SellCoin(coin, coinQuantDecimal, _administrator.ComissionRate);
-                                        var newComission = new Comission(coinNameFinal, DateTime.Now, comissionValue, "Venda");
-                                        _administrator.AddComission(newComission);
+                                        _administrator.AddComission(coinNameFinal, comissionValue, DateTime.Now, "Venda");
                                         existsCoin = true;
                                         break;
                                     }
@@ -231,8 +255,8 @@ namespace TugaExchange
                         case 4: //portfolio
                             Console.WriteLine("EUR" + "|" + Math.Round(_investor.FundsInEuros, 2) + "|" + Math.Round(_investor.FundsInEuros, 2) + "|" + "1");
                             _api.GetPrices(out List<Coin> coins);
-                            //Total do dinheiro na conta, que começa sempre com o primeiro deposito. 
-                            var totalEuros = _investor.FundsInEuros; 
+                            //Total do dinheiro na conta, que começa sempre com o primeiro deposito.
+                            var totalEuros = _investor.FundsInEuros;
 
                             for (int i = 0; i < _investor.Coins.Count; i++)
                             {
@@ -241,20 +265,20 @@ namespace TugaExchange
                                     if (updatedCoin.Name == _investor.Coins[i].Name)
                                     {
                                         var valueInEuros = _investor.CoinsQuantities[i] * updatedCoin.ExchangeRateInEur;
-                                        totalEuros += valueInEuros; 
+                                        totalEuros += valueInEuros;
                                         Console.WriteLine(updatedCoin.Name + "|" + _investor.CoinsQuantities[i] + "|" + Math.Round(valueInEuros, 2) +
                                                           "|" + Math.Round(updatedCoin.ExchangeRateInEur, 2));
                                     }
                                 }
                             }
 
-                            Console.WriteLine("\nTotal em EUR: " + Math.Round(totalEuros,2));
+                            Console.WriteLine("\nTotal em EUR: " + Math.Round(totalEuros, 2));
                             Console.WriteLine(Stats.MessageToAdvance(""));
                             break;
 
                         case 5:
                             _api.GetPrices(out List<Coin> updatedCoins);
-                            if (updatedCoins.Count==0)
+                            if (updatedCoins.Count == 0)
                             {
                                 Console.WriteLine("Não existem moedas inseridas no sistema");
                             }
@@ -274,7 +298,6 @@ namespace TugaExchange
                     Console.WriteLine(Stats.MessageToAdvance(ex.Message));
                 }
                 Console.ReadKey();
-
             } while (true);
         }
     }
