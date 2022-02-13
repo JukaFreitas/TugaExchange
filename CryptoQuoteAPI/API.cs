@@ -127,16 +127,15 @@ namespace CryptoQuoteAPI
             var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
-            //var fileInfo = new FileInfo(filePath);
-            //if (!fileInfo.Exists)
-            //{
-            //    fileInfo.Create();
-            //}
-
-            //Criação json a partir da Lista de Coins
 
             string json = System.Text.Json.JsonSerializer.Serialize(_coins);
             File.WriteAllText(filePath, json);
+
+            fileName = "UpdateInSeconds.json";
+            filePath = Path.Combine(directory, fileName);
+            json = System.Text.Json.JsonSerializer.Serialize(_priceUpdateInSeconds);
+            //writealltext cria-me o ficheiro 
+            File.WriteAllText(filePath, json); 
         }
 
         public void Read()
@@ -148,8 +147,24 @@ namespace CryptoQuoteAPI
             var fileInfo = new FileInfo(filePath);
             if (fileInfo.Exists)
             {
-                var jason = File.ReadAllText(filePath);
-                _coins = System.Text.Json.JsonSerializer.Deserialize<List<Coin>>(jason);
+                var json = File.ReadAllText(filePath);
+                _coins = System.Text.Json.JsonSerializer.Deserialize<List<Coin>>(json);
+            }
+            else
+            {
+                _coins.Add(new Coin("Doce", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("Galo", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("Tuga", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("Chow", 1.00m, DateTime.Now));
+            }
+
+            fileName = "UpdateInSeconds.json";
+            filePath = Path.Combine(directory, fileName);
+            fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists)
+            {
+                var json = File.ReadAllText(filePath);
+                _priceUpdateInSeconds = System.Text.Json.JsonSerializer.Deserialize<int>(json);
             }
         }
 

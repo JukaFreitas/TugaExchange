@@ -17,7 +17,7 @@ namespace TugaExchange
         {
             Console.WriteLine(message);
             var opcao = Console.ReadLine();
-            opcao.Trim();
+            opcao = opcao.Trim();
 
             if (!int.TryParse(opcao, out int num))
             {
@@ -31,7 +31,12 @@ namespace TugaExchange
         {
             Console.WriteLine(message);
             var name = Console.ReadLine();
+            //efeito de Trim dos espaços no meio
             var coinNameUpper = name.Replace(" ", "").ToUpper();
+            if (coinNameUpper == "")
+            {
+                throw new Exception("Tem inserir uma moeda.\n\nPrima ESPAÇO para sair ou outra tecla para tentar novamente.");
+            }
             return coinNameUpper;
         }
 
@@ -41,7 +46,7 @@ namespace TugaExchange
             var cashInEuros = decimal.TryParse(Console.ReadLine(), out decimal cashInDecimals);
             if (cashInEuros == false)
             {
-                throw new Exception("Insira montante válido\n" + "Exemplo: 50,50");
+                throw new Exception(Stats.MessageToAdvance("Insira montante válido\n" + "Exemplo: 50,50"));
             }
             return cashInDecimals; 
         }
@@ -49,6 +54,23 @@ namespace TugaExchange
         public static string MessageToAdvance(string message)
         {
             return message + "\nPrima qualquer tecla para avançar"; 
+        }
+
+        public static void PrintErrorMessage(string message)
+        {
+            var oldColor = System.Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(message);
+            Console.ForegroundColor = oldColor;
+
+        }
+
+        public static void PrintSucessMessage()
+        {
+            var oldColor = System.Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
+            Console.ForegroundColor = oldColor;
         }
     }
 }
