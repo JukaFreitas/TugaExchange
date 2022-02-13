@@ -8,6 +8,8 @@ namespace TugaExchange
     {
         private API _api;
         private List<Investor> _investors;
+
+        // preciso das comissoes -> administraor
         private Administrator _administrator;
 
         public MenuInvestor(API api, List<Investor> investors, Administrator administrator)
@@ -98,7 +100,7 @@ namespace TugaExchange
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Stats.PrintErrorMessage(ex.Message);
                     Console.WriteLine();
                     //https://stackoverflow.com/questions/31996519/listen-on-esc-while-reading-console-line
                     //Console ReadKey retorna um ConsoleKeyInfo que tem como atributo a Key.
@@ -131,8 +133,6 @@ namespace TugaExchange
                             throw new Exception("Este UserName já se encontra registado.\n\nPrima ESPAÇO para sair ou outra tecla para tentar novamente.");
                         }
                     }
-                    // quando o código chega a esta parte, o validUserName continua em falso e volta para cima e não faz o break do ciclo.
-                    // validUserName se não se encontrar registado, continua com o valor de true e sair do ciclo.
 
                     Console.WriteLine("Password:");
                     var password = Console.ReadLine();
@@ -143,13 +143,13 @@ namespace TugaExchange
 
                     var investor = new Investor(userName, password);
                     _investors.Add(investor);
-                    _api.SaveInvestor(_investors);
+                    _api.SaveInvestors(_investors);
                     MenuInvestidor(investor);
                     break;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Stats.PrintErrorMessage(ex.Message);
                     Console.WriteLine();
                     if (Console.ReadKey().Key == ConsoleKey.Spacebar)
                     {
@@ -192,8 +192,7 @@ namespace TugaExchange
                         case 1: //Depositar
                             var cashInDecimals = Stats.CoinQuantityValidation("Insira o montante a depositar em Euros:");
                             investor.Deposit(cashInDecimals);
-                            _api.SaveInvestor(_investors);
-
+                            _api.SaveInvestors(_investors);
                             Stats.PrintSucessMessage();
                             break;
 
@@ -220,10 +219,10 @@ namespace TugaExchange
 
                                 if (existsCoin)
                                 {
-                                    _api.SaveInvestor(_investors);
+                                    _api.SaveInvestors(_investors);
                                     _api.SaveAdministrator(_administrator);
                                     Stats.PrintSucessMessage();
-                                    Console.ReadKey(); 
+                                    Console.ReadKey();
                                 }
                                 else
                                 {
@@ -256,10 +255,10 @@ namespace TugaExchange
 
                                 if (existsCoin)
                                 {
-                                    _api.SaveInvestor(_investors);
+                                    _api.SaveInvestors(_investors);
                                     _api.SaveAdministrator(_administrator);
                                     Stats.PrintSucessMessage();
-                                    Console.ReadKey(); 
+                                    Console.ReadKey();
                                 }
                                 else
                                 {
@@ -287,11 +286,7 @@ namespace TugaExchange
                 catch (Exception ex)
                 {
                     Stats.PrintErrorMessage(ex.Message);
-                    if (Console.ReadKey().Key == ConsoleKey.Spacebar)
-                    {
-                        return;
-                    }
-
+                    Console.ReadKey();
                 }
             } while (true);
         }

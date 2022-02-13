@@ -11,7 +11,7 @@ namespace CryptoQuoteAPI
 
         public string Type
         {
-            get 
+            get
             {
                 return _type;
             }
@@ -59,7 +59,6 @@ namespace CryptoQuoteAPI
 
         public Comission()
         {
-
         }
 
         public Comission(string name, DateTime dateNow, decimal comissionValue, string type)
@@ -67,8 +66,7 @@ namespace CryptoQuoteAPI
             _coinName = name;
             _date = dateNow;
             _comissionValue = comissionValue;
-            _type = type;  
-            
+            _type = type;
         }
     }
 }

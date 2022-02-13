@@ -21,6 +21,7 @@ namespace CryptoQuoteAPI
         public API()
         {
             _coins = new List<Coin>();
+            //valor default
             _priceUpdateInSeconds = 60;
         }
 
@@ -58,36 +59,14 @@ namespace CryptoQuoteAPI
                     throw new Exception("A moeda já consta na base de dados.\n");
                 }
             }
-            // Criação de nava moeda, pois não é necessário antes da verificação se há uma igual.
+
             var coinToAdd = new Coin(coinName, 1.00m, DateTime.Now);
             _coins.Add(coinToAdd);
             Save();
         }
 
-        // eliminei o getcoins porque não me atualizava os preços. vou utilizar o getprices a devolver uma lista de coins atualizada.
-
         public void RemoveCoin(string coinName)
         {
-            /* bool hasCoin = false;
-             foreach (var coin in _coins)
-             {
-                 // para aceder à propriedade Name da coin, temos de colocar coin.Name, porque coin(string name, decimal value) é um objeto da Class Coin
-                 if (coin.Name.Equals(coinName))
-                 {
-                     _coins.Remove(coin);
-                     hasCoin = true;
-                 }
-             }
-             // isto para validar se tem Coin ou não que queremos remover da lista. Primeiro, entra no if, se encontra termina com o hasCoin = true;
-             // Caso não aconteca, quer dizer que não há moeda e por isso a criação da excepção.
-             if (!hasCoin)
-             {
-                 throw new Exception("A moeda não consta na base de dados");
-             }*/
-            //quero mostrar a lista de todas as coins
-            //tenho de validar se tenho alguma moeda com aquele nome.
-            // O codigo de cima não funciona, porque estou a iterar e a remover. Solução: criação de lista fantasma. ToList(), por exemplo.
-
             //Retorna a quantidade de elementos removidos da lista, segundo a condição.
 
             var removedQuantity = _coins.RemoveAll(coin => coin.Name.Equals(coinName));
@@ -127,15 +106,14 @@ namespace CryptoQuoteAPI
             var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
-
             string json = System.Text.Json.JsonSerializer.Serialize(_coins);
             File.WriteAllText(filePath, json);
 
             fileName = "UpdateInSeconds.json";
             filePath = Path.Combine(directory, fileName);
             json = System.Text.Json.JsonSerializer.Serialize(_priceUpdateInSeconds);
-            //writealltext cria-me o ficheiro 
-            File.WriteAllText(filePath, json); 
+            //writealltext cria-me o ficheiro
+            File.WriteAllText(filePath, json);
         }
 
         public void Read()
@@ -152,10 +130,12 @@ namespace CryptoQuoteAPI
             }
             else
             {
-                _coins.Add(new Coin("Doce", 1.00m, DateTime.Now));
-                _coins.Add(new Coin("Galo", 1.00m, DateTime.Now));
-                _coins.Add(new Coin("Tuga", 1.00m, DateTime.Now));
-                _coins.Add(new Coin("Chow", 1.00m, DateTime.Now));
+                // Se não existir o ficheiro, ao criar o programa já vai adicionar estas coins por default
+                _coins.Add(new Coin("DOCE", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("GALO", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("TUGA", 1.00m, DateTime.Now));
+                _coins.Add(new Coin("CHOW", 1.00m, DateTime.Now));
+                Save();
             }
 
             fileName = "UpdateInSeconds.json";
@@ -164,11 +144,12 @@ namespace CryptoQuoteAPI
             if (fileInfo.Exists)
             {
                 var json = File.ReadAllText(filePath);
+                //por default é 60 -> definido no construtor da API
                 _priceUpdateInSeconds = System.Text.Json.JsonSerializer.Deserialize<int>(json);
             }
         }
 
-        public void SaveInvestor(List<Investor> investors)
+        public void SaveInvestors(List<Investor> investors)
         {
             var fileName = "Investors.json";
             var directory = @"C:\temp\tugaexchange";
@@ -179,7 +160,7 @@ namespace CryptoQuoteAPI
             File.WriteAllText(filePath, jsonInvestor);
         }
 
-        public List<Investor> ReadInvestor()
+        public List<Investor> ReadInvestors()
         {
             var fileName = "Investors.json";
             var directory = @"C:\temp\tugaexchange";
@@ -194,6 +175,7 @@ namespace CryptoQuoteAPI
             }
             else
             {
+                // se não existir cria um novo investidor.
                 return new List<Investor>();
             }
         }
@@ -219,13 +201,12 @@ namespace CryptoQuoteAPI
             {
                 var json = File.ReadAllText(filePath);
                 var administrator = System.Text.Json.JsonSerializer.Deserialize<Administrator>(json);
-                return administrator; 
+                return administrator;
             }
             else
             {
-                return new Administrator(); 
+                return new Administrator();
             }
-
         }
     }
 }

@@ -6,6 +6,7 @@ namespace TugaExchange
     {
         private static void Main(string[] args)
         {
+            //Criar directoria se não existir.
             var dirInfo = new DirectoryInfo(@"C:\temp\tugaexchange");
             if (!dirInfo.Exists)
             {

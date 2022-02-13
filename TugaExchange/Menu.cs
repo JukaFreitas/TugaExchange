@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 namespace TugaExchange
 {
-    internal class Menu 
-    {//tenho de declarar os objetos e depois inicializá-los
+    internal class Menu
+    {
+        //tenho de declarar os objetos e depois inicializá-los
         private API _api;
+
         private List<Investor> _investors;
         private Administrator _administrator;
         private MenuInvestor _menuInvestor;
@@ -17,7 +19,8 @@ namespace TugaExchange
             _api = new API();
             _api.Read();
             //Estou a retornar um new Investor, no metodo Read, logo se ele não encontrar, vai criar um novo.
-            _investors = _api.ReadInvestor();
+            _investors = _api.ReadInvestors();
+            // aplicado ao administrator
             _administrator = _api.ReadAdministrator();
             _menuInvestor = new MenuInvestor(_api, _investors, _administrator);
             _menuAdministrator = new MenuAdministrator(_api, _investors, _administrator);
@@ -29,6 +32,12 @@ namespace TugaExchange
                 "3) Sair"
             };
 
+            Console.WriteLine("********************************************************************");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"{" ",10 + 10 } {"TugaExchange",10 + 10}");
+            Console.ResetColor();
+            Console.WriteLine("********************************************************************");
+            Console.ReadKey();
             do
             {
                 try
@@ -44,7 +53,7 @@ namespace TugaExchange
                     }
                     else if (opcao == 2)
                     {
-                        _menuAdministrator.MenuAdministrador(); 
+                        _menuAdministrator.MenuAdministrador();
                     }
                     else if (opcao == 3)
                     {

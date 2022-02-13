@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace TugaExchange
 {
+    //class de apoio aos menus
     internal static class Stats
     {
         public static void Print(List<string> menu)
@@ -48,29 +49,26 @@ namespace TugaExchange
             {
                 throw new Exception(Stats.MessageToAdvance("Insira montante válido\n" + "Exemplo: 50,50"));
             }
-            return cashInDecimals; 
+            return cashInDecimals;
         }
 
         public static string MessageToAdvance(string message)
         {
-            return message + "\nPrima qualquer tecla para avançar"; 
+            return message + "\nPrima qualquer tecla para avançar";
         }
 
         public static void PrintErrorMessage(string message)
         {
-            var oldColor = System.Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(message);
-            Console.ForegroundColor = oldColor;
-
+            Console.ResetColor();
         }
 
         public static void PrintSucessMessage()
         {
-            var oldColor = System.Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine(Stats.MessageToAdvance("Operação concluida com sucesso"));
-            Console.ForegroundColor = oldColor;
+            Console.ResetColor();
         }
     }
 }

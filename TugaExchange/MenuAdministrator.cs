@@ -7,7 +7,10 @@ namespace TugaExchange
     public class MenuAdministrator
     {
         private API _api;
+
+        //investors -> no caso de remover a moeda
         private List<Investor> _investors;
+
         private Administrator _administrator;
 
         public MenuAdministrator(API api, List<Investor> investors, Administrator administrator)
@@ -73,16 +76,17 @@ namespace TugaExchange
                     switch (opcaoAdministrador)
                     {
                         case 1: // Adicionar moeda
-                            //CoinNameValidation return string e o AddCoin recebe uma string
-
+                            //CoinNameToUpper return string e o AddCoin recebe uma string
                             _api.AddCoin(Stats.CoinNameToUpper("Insira o nome da moeda a adicionar:"));
-                            Stats.PrintSucessMessage(); 
+                            Stats.PrintSucessMessage();
                             Console.ReadKey();
                             break;
 
                         case 2: // Remover moeda
                             var coinName = Stats.CoinNameToUpper("Insira o nome da moeda a remover");
+                            //eliminar a moeda com a lista atualizada dos preços
                             _api.GetPrices(out List<Coin> updatedCoins);
+                            //para validar se a moeda existe
                             var existCoins = false;
                             foreach (var coin in updatedCoins)
                             {
@@ -96,7 +100,7 @@ namespace TugaExchange
                                             var comissionValue = investor.SellAllCoin(coin, _administrator.ComissionRate);
                                             _administrator.AddComission(coinName, comissionValue, DateTime.Now, "Venda");
                                         }
-                                    } // Se apanhar o erro, pq o investidor não tem a moeda, o catch apanha o erro e prossegue no ciclo
+                                    } // Se apanhar o erro, pq o investidor não tem a moeda, o catch apanha o erro e prossegue no ciclo -> class Investor
                                     catch
                                     {
                                     }
@@ -108,10 +112,11 @@ namespace TugaExchange
                             }
                             else
                             {
-                                _api.RemoveCoin(coinName);
-                                _api.SaveInvestor(_investors);
+                                _api.RemoveCoin(coinName); // Save() -> investor
+                                // investor -> tem de retirar a moeda das suas carteiras e devolver o dinheiro da venda
+                                _api.SaveInvestors(_investors);
                                 _api.SaveAdministrator(_administrator);
-                                Stats.PrintSucessMessage(); 
+                                Stats.PrintSucessMessage();
                                 Console.ReadKey();
                             }
                             break;
@@ -139,22 +144,22 @@ namespace TugaExchange
                             Console.ReadKey();
                             break;
 
-                        case 4:
+                        case 4: // definir intervalo de tempo
                             Console.WriteLine("Intervalo de tempo atual: {0}", _api.GetPriceUpdateInSeconds());
                             Console.WriteLine("\nInsira o intervalo de tempo:");
                             var spanTime = int.TryParse(Console.ReadLine(), out int numTime);
-                            if (spanTime==true)
+                            if (spanTime == true)
                             {
                                 _api.DefinePriceUpdateInSeconds(numTime);
                                 Stats.PrintSucessMessage();
                                 Console.ReadKey();
-                                _api.Save(); 
+                                _api.Save();
                             }
                             else
                             {
-                                throw new Exception(Stats.MessageToAdvance("Não é permitido o intervalo de tempo inserido.")); 
+                                throw new Exception(Stats.MessageToAdvance("Não é permitido o intervalo de tempo inserido."));
                             }
-                            break; 
+                            break;
 
                         default: // sair
                             // Return sem valor, sai do metodo, de forma a sair do ciclo do while e voltar ao menu principal.
@@ -163,11 +168,8 @@ namespace TugaExchange
                 }
                 catch (Exception ex)
                 {
-                    Stats.PrintErrorMessage(ex.Message); 
-                    if (Console.ReadKey().Key == ConsoleKey.Spacebar)
-                    {
-                        return;
-                    }
+                    Stats.PrintErrorMessage(ex.Message);
+                    Console.ReadKey();
                 }
             } while (true);
         }
