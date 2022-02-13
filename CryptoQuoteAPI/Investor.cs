@@ -8,7 +8,32 @@ namespace CryptoQuoteAPI
         private List<Coin> _coins;
         private List<decimal> _coinsQuantities;
         private decimal _fundsInEuros;
+        private string _userName;
+        private string _password;
 
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                _userName = value;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+            }
+        }
         public List<Coin> Coins
         {
             get
@@ -45,11 +70,13 @@ namespace CryptoQuoteAPI
             }
         }
 
-        public Investor()
+        public Investor(string userName, string password)
         {
             _coins = new List<Coin>();
             _coinsQuantities = new List<decimal>();
             _fundsInEuros = 0;
+            _userName = userName;
+            _password = password; 
         }
 
         public void Deposit(decimal cashInEuros)
@@ -122,7 +149,7 @@ namespace CryptoQuoteAPI
                 throw new Exception("O investidor não tem esta moeda.");
             }
             var coinInEuros = coinToSell.ExchangeRateInEur * _coinsQuantities[index];
-            return SellCoin(coinToSell, _coinsQuantities[index], comissionRate); 
+            return SellCoin(coinToSell, _coinsQuantities[index], comissionRate);
 
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace CryptoQuoteAPI
 {
@@ -43,7 +42,6 @@ namespace CryptoQuoteAPI
         {
             var comission = new Comission(coin, dateTime, comissionValue, type);
             _comissions.Add(comission);
-
         }
     }
 }

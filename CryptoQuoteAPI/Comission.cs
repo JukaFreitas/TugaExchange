@@ -7,7 +7,7 @@ namespace CryptoQuoteAPI
         private string _coinName;
         private DateTime _date;
         private decimal _comissionValue;
-        private string _type; 
+        private string _type;
 
         public string Type
         {

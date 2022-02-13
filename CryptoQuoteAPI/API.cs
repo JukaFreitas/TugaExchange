@@ -153,18 +153,18 @@ namespace CryptoQuoteAPI
             }
         }
 
-        public void SaveInvestor(Investor investor)
+        public void SaveInvestor(List<Investor> investors)
         {
             var fileName = "Investors.json";
             var directory = @"C:\temp\tugaexchange";
             string filePath = Path.Combine(directory, fileName);
 
-            string jsonInvestor = JsonSerializer.Serialize<Investor>(investor);
+            string jsonInvestor = JsonSerializer.Serialize<List<Investor>>(investors);
 
             File.WriteAllText(filePath, jsonInvestor);
         }
 
-        public Investor ReadInvestor()
+        public List<Investor> ReadInvestor()
         {
             var fileName = "Investors.json";
             var directory = @"C:\temp\tugaexchange";
@@ -174,12 +174,12 @@ namespace CryptoQuoteAPI
             if (fileInfo.Exists)
             {
                 var json = File.ReadAllText(filePath);
-                var investor = JsonSerializer.Deserialize<Investor>(json);
-                return investor;
+                var investors = JsonSerializer.Deserialize<List<Investor>>(json);
+                return investors;
             }
             else
             {
-                return new Investor();
+                return new List<Investor>();
             }
         }
 
@@ -212,16 +212,5 @@ namespace CryptoQuoteAPI
             }
 
         }
-
-        /*   public API(string name, decimal value)
-           {
-               List<Coin> currencies = new List<Coin>()
-               {
-                   new Coin {Name = "Doce", Value = 0.95m },
-                   new Coin {Name = "Galo", Value = 2.03m },
-                   new Coin {Name = "Doce", Value = 1.23m },
-                   new Coin {Name = "Tuga", Value = 2.03m }
-               };
-           }*/
     }
 }
