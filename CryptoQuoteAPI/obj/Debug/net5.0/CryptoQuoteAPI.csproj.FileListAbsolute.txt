@@ -2,6 +2,7 @@ C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\bin\Debug\net5.0\CryptoQuoteAPI.dll
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\bin\Debug\net5.0\ref\CryptoQuoteAPI.dll
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\bin\Debug\net5.0\CryptoQuoteAPI.pdb
+C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.csproj.AssemblyReference.cache
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.AssemblyInfoInputs.cache
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.AssemblyInfo.cs
@@ -9,4 +10,3 @@ C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.dll
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\ref\CryptoQuoteAPI.dll
 C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.pdb
-C:\Users\Utilizador\Desktop\Restart2\C#_repositorio\TugaExchange\CryptoQuoteAPI\obj\Debug\net5.0\CryptoQuoteAPI.csproj.AssemblyReference.cache

@@ -49,7 +49,7 @@ namespace TugaExchange
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Stats.PrintErrorMessage(ex.Message);
                     if (Console.ReadKey().Key == ConsoleKey.Spacebar)
                     {
                         return;
@@ -67,9 +67,9 @@ namespace TugaExchange
 
                     var opcaoAdministrador = Stats.OptionToNum("Insira a opção pretendida:");
 
-                    if (!(opcaoAdministrador >= 1 && opcaoAdministrador <= 4))
+                    if (!(opcaoAdministrador >= 1 && opcaoAdministrador <= 5))
                     {
-                        throw new Exception("Tem de inserir um opção entre 1 e 4");
+                        throw new Exception("Tem de inserir um opção entre 1 e 5");
                     }
 
                     Console.Clear();

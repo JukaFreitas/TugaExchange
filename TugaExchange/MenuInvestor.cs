@@ -194,6 +194,7 @@ namespace TugaExchange
                             investor.Deposit(cashInDecimals);
                             _api.SaveInvestors(_investors);
                             Stats.PrintSucessMessage();
+                            Console.ReadKey();
                             break;
 
                         case 2: // Comprar moeda

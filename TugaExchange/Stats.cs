@@ -36,8 +36,9 @@ namespace TugaExchange
             var coinNameUpper = name.Replace(" ", "").ToUpper();
             if (coinNameUpper == "")
             {
-                throw new Exception("Tem inserir uma moeda.\n\nPrima ESPAÇO para sair ou outra tecla para tentar novamente.");
+                throw new Exception("Tem inserir uma moeda.");
             }
+            
             return coinNameUpper;
         }
 

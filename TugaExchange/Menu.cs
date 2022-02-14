@@ -33,9 +33,7 @@ namespace TugaExchange
             };
 
             Console.WriteLine("********************************************************************");
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine($"{" ",10 + 10 } {"TugaExchange",10 + 10}");
-            Console.ResetColor();
             Console.WriteLine("********************************************************************");
             Console.ReadKey();
             do
